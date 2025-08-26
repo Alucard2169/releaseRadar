@@ -47,19 +47,25 @@
 
 
 from typing import Union
+from pydantic import BaseModel
 from fastapi.middleware.cors import CORSMiddleware
 from fastapi import FastAPI
+from src.utils.urlParser import parse_github_url
+
 
 app = FastAPI()
 
 
 app.add_middleware(
     CORSMiddleware,
-    allow_origins="http://localhost:3000",
+    allow_origins=["http://localhost:3000"],
     allow_credentials=True,
     allow_methods=["*"],
     allow_headers=["*"],
 )
+
+class RepoUrl(BaseModel):
+    url: str
 
 
 @app.get("/")
@@ -67,9 +73,15 @@ def read_root():
     return {"Hello": "World"}
 
 
-@app.get("/test/")
-def read_test():
-    return {"Test": "Test"}
+# return extracted info to user
+@app.post("/parse")
+def parse_githubUrl(data: RepoUrl):
+    print(data)
+    parsed = parse_github_url(data.url)
+    if not parsed:
+        return {"error": "Invalid GitHub URL"}
+    return {"parsed": parsed}
+
 
 @app.get("/items/{item_id}")
 def read_item(item_id: int, q: Union[str, None] = None):
