@@ -1,8 +1,9 @@
 from typing import Optional, Dict
 import re
 
-def parse_github_url(url: str) -> Optional[Dict[str, str]]:
 
+# GitHub URL Parser
+def parse_github_url(url: str) -> Optional[Dict[str, str]]:
     patterns = [
         # HTTPS with optional branch and path
         r"^https?://github\.com/(?P<owner>[^/]+)/(?P<repo>[^/]+?)(?:\.git)?(?:/tree/(?P<branch>[^/]+)(?:/(?P<path>.*))?)?$",
@@ -24,3 +25,9 @@ def parse_github_url(url: str) -> Optional[Dict[str, str]]:
             return result
 
     return None
+
+
+# Example usage
+# url = "https://github.com/<github_username>/<repo_name>"
+# print(parse_github_url(url))
+# {'owner': '<github_username>', 'repo': '<repo_name>', 'branch': 'main', 'path': None}

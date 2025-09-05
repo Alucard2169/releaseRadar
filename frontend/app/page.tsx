@@ -8,9 +8,9 @@ export default function Home() {
   const [showTooltip, setShowTooltip] = useState(false);
   const [repoLink, setRepoLink] = useState("");
 
-  const speakToBackend = async () => {
+  const fetchRepoData = async () => {
     try {
-      const response = await fetch("/api/parse", {
+      const response = await fetch("/api/repo/parse", {
         method: "POST",
         headers: {
           "Content-Type": "application/json",
@@ -26,7 +26,7 @@ export default function Home() {
   }
 
   const handleSubmit = () => {
-    speakToBackend()
+    fetchRepoData()
   }
 
 
